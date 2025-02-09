@@ -37,3 +37,38 @@ function addQuote() {
 // Event Listeners
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 document.getElementById("addQuote").addEventListener("click", addQuote);
+
+function addQuote(text, category) {
+    if (!text || !category) {
+        console.error("Quote text and category are required.");
+        return;
+    }
+
+    // Add new quote to the quotes array
+    quotes.push({ text, category });
+
+    // Update the DOM with the new quote
+    displayRandomQuote();
+}
+
+const quotes = [
+    { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+    { text: "In the middle of every difficulty lies opportunity.", category: "Inspiration" }
+];
+
+function displayRandomQuote() {
+    if (quotes.length === 0) {
+        console.error("No quotes available.");
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+
+    document.getElementById("quoteText").innerText = randomQuote.text;
+    document.getElementById("quoteCategory").innerText = randomQuote.category;
+}
+
+document.getElementById("newQuoteButton").addEventListener("click", () => {
+    displayRandomQuote();
+});
