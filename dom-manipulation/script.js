@@ -1,11 +1,11 @@
-// Quotes array (initial sample)
+// Quotes array with objects containing text and category
 const quotes = [
     { text: "The best way to predict the future is to create it.", category: "Motivation" },
     { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Success" },
     { text: "Do what you can, with what you have, where you are.", category: "Life" }
 ];
 
-// Function to display a random quote
+// Function to display a random quote and update the DOM
 function displayRandomQuote() {
     const quoteDisplay = document.getElementById("quoteDisplay");
 
@@ -14,14 +14,12 @@ function displayRandomQuote() {
         return;
     }
 
+    // Select a random quote from the array
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
 
-    // Debugging: Check if function executes
-    console.log("Displaying new quote:", randomQuote);
-
-    // Update the DOM
-    quoteDisplay.textContent = `"${randomQuote.text}" - ${randomQuote.category}`;
+    // Update the quote display
+    quoteDisplay.innerHTML = `"${randomQuote.text}" <br> <em>- ${randomQuote.category}</em>`;
 }
 
 // Function to add a new quote to the array and update the DOM
@@ -38,10 +36,8 @@ function addQuote() {
     const newQuoteCategory = categoryInput.value.trim();
 
     if (newQuoteText && newQuoteCategory) {
+        // Add new quote object to the array
         quotes.push({ text: newQuoteText, category: newQuoteCategory });
-
-        // Debugging: Check if new quote is added
-        console.log("New quote added:", { text: newQuoteText, category: newQuoteCategory });
 
         // Clear input fields
         quoteInput.value = "";
@@ -71,6 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error: Button with ID 'addQuoteButton' not found.");
     }
 
-    // Ensure an initial quote is displayed
+    // Display an initial quote on page load
     displayRandomQuote();
 });
