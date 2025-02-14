@@ -6,23 +6,20 @@ const quotes = [
 ];
 
 // Function to display a random quote
-function showRandomQuote() {
+function displayRandomQuote() {
     const quoteDisplay = document.getElementById("quoteDisplay");
-    quoteDisplay.textContent = ""; // Clear previous content
+    quoteDisplay.innerHTML = ""; // Clear previous content
 
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
 
-    // Create a paragraph element for the quote
     const quoteText = document.createElement("p");
     quoteText.textContent = `"${randomQuote.text}"`;
 
-    // Create a span for the category
     const quoteCategory = document.createElement("span");
     quoteCategory.textContent = ` - ${randomQuote.category}`;
     quoteCategory.style.fontStyle = "italic";
 
-    // Append elements
     quoteDisplay.appendChild(quoteText);
     quoteDisplay.appendChild(quoteCategory);
 }
@@ -41,11 +38,14 @@ function addQuote() {
         // Clear input fields
         quoteInput.value = "";
         categoryInput.value = "";
-        alert("New quote added successfully!");
+
+        // Display the newly added quote
+        displayRandomQuote();
     } else {
         alert("Please enter both quote text and category.");
     }
 }
 
 // Attach event listeners
-document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
+document.getElementById("addQuoteButton").addEventListener("click", addQuote);
