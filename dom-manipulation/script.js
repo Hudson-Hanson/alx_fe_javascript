@@ -17,6 +17,10 @@ function displayRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
 
+    // Debugging: Check if function executes
+    console.log("Displaying new quote:", randomQuote);
+
+    // Update the DOM
     quoteDisplay.textContent = `"${randomQuote.text}" - ${randomQuote.category}`;
 }
 
@@ -36,11 +40,14 @@ function addQuote() {
     if (newQuoteText && newQuoteCategory) {
         quotes.push({ text: newQuoteText, category: newQuoteCategory });
 
+        // Debugging: Check if new quote is added
+        console.log("New quote added:", { text: newQuoteText, category: newQuoteCategory });
+
         // Clear input fields
         quoteInput.value = "";
         categoryInput.value = "";
 
-        // Immediately update the displayed quote
+        // Update the displayed quote
         displayRandomQuote();
     } else {
         alert("Please enter both quote text and category.");
@@ -64,6 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error: Button with ID 'addQuoteButton' not found.");
     }
 
-    // Display an initial quote on page load
+    // Ensure an initial quote is displayed
     displayRandomQuote();
 });
