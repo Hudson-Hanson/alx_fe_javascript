@@ -28,10 +28,11 @@ async function fetchQuotesFromServer() {
     }
 }
 
-// ✅ Function to sync local quotes with the server
+// ✅ Function to sync local quotes with the server (with notification)
 async function syncQuotes() {
     try {
         await fetchQuotesFromServer(); // Fetch latest quotes from server
+        notifyUser("Quotes synced with server!"); // ✅ Show UI notification
         console.log("Sync complete: Local storage updated with server data.");
     } catch (error) {
         console.error("Error syncing quotes:", error);
@@ -91,7 +92,7 @@ function addQuote() {
     }
 }
 
-// Function to notify user about sync updates
+// ✅ Function to notify user about sync updates or conflicts
 function notifyUser(message) {
     const notification = document.createElement("div");
     notification.innerText = message;
