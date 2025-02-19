@@ -14,12 +14,23 @@ function showRandomQuote() {
         return;
     }
 
+    // Clear existing content
+    quoteDisplay.innerHTML = "";
+
     // Select a random quote
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
 
-    // Update the DOM with innerHTML (as required)
-    quoteDisplay.innerHTML = `<p>"${randomQuote.text}"</p><em>- ${randomQuote.category}</em>`;
+    // Create elements dynamically
+    const quoteText = document.createElement("p");
+    quoteText.textContent = `"${randomQuote.text}"`;
+
+    const quoteCategory = document.createElement("em");
+    quoteCategory.textContent = `- ${randomQuote.category}`;
+
+    // Append elements to the quote display
+    quoteDisplay.appendChild(quoteText);
+    quoteDisplay.appendChild(quoteCategory);
 }
 
 // Function to add a new quote to the array and update the DOM
