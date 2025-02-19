@@ -8,8 +8,8 @@ function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// Function to fetch quotes from a simulated server
-async function fetchQuotesFromServer() {
+// Function to fetch quotes from the server and sync with local storage
+async function syncQuotes() {
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch server data");
@@ -24,11 +24,25 @@ async function fetchQuotesFromServer() {
 
         resolveConflicts(formattedQuotes);
     } catch (error) {
-        console.error("Error fetching from server:", error);
+        console.error("Error syncing with server:", error);
     }
 }
 
-// Function to sync local quotes with the server
+// Function to handle conflict resolution
+function resolveConflicts(serverQuotes) {
+    const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+    
+    // Merging logic: Keeping all unique quotes
+    const mergedQuotes = [...new Map([...localQuotes, ...serverQuotes].map(q => [q.text, q])).values()];
+    
+    // Save merged quotes
+    localStorage.setItem("quotes", JSON.stringify(mergedQuotes));
+    quotes = mergedQuotes;
+
+    notifyUser("Quotes synced successfully!");
+}
+
+// Function to post a new quote to the server
 async function postQuoteToServer(newQuote) {
     try {
         const response = await fetch(API_URL, {
@@ -100,7 +114,7 @@ function notifyUser(message) {
 }
 
 // Auto-sync with the server every 30 seconds
-setInterval(fetchQuotesFromServer, 30000);
+setInterval(syncQuotes, 30000);
 
-// Fetch quotes when the page loads
-document.addEventListener("DOMContentLoaded", fetchQuotesFromServer);
+// Fetch and sync quotes when the page loads
+document.addEventListener("DOMContentLoaded", syncQuotes);
