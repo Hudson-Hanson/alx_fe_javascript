@@ -6,7 +6,7 @@ const quotes = [
 ];
 
 // Function to select a random quote and update the DOM
-function displayRandomQuote() {
+function showRandomQuote() {
     const quoteDisplay = document.getElementById("quoteDisplay");
 
     if (!quoteDisplay) {
@@ -44,7 +44,7 @@ function addQuote() {
         categoryInput.value = "";
 
         // Update the DOM immediately
-        displayRandomQuote();
+        showRandomQuote();
     } else {
         alert("Please enter both quote text and category.");
     }
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addQuoteButton = document.getElementById("addQuoteButton");
 
     if (showNewQuoteButton) {
-        showNewQuoteButton.addEventListener("click", displayRandomQuote);
+        showNewQuoteButton.addEventListener("click", showRandomQuote);
     } else {
         console.error("Error: Button with ID 'newQuote' not found.");
     }
@@ -68,5 +68,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Display an initial quote when the page loads
-    displayRandomQuote();
+    showRandomQuote();
 });
