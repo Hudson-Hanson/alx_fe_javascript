@@ -23,7 +23,7 @@ function showRandomQuote() {
 }
 
 // Function to add a new quote to the array and update the DOM
-function addQuote() {
+function createAddQuoteForm() {
     const quoteInput = document.getElementById("newQuoteText");
     const categoryInput = document.getElementById("newQuoteCategory");
 
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (addQuoteButton) {
-        addQuoteButton.addEventListener("click", addQuote);
+        addQuoteButton.addEventListener("click", createAddQuoteForm);
     } else {
         console.error("Error: Button with ID 'addQuoteButton' not found.");
     }
