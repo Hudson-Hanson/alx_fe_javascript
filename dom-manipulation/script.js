@@ -28,7 +28,17 @@ async function fetchQuotesFromServer() {
     }
 }
 
-// Function to sync local quotes with the server
+// ✅ Function to sync local quotes with the server
+async function syncQuotes() {
+    try {
+        await fetchQuotesFromServer(); // Fetch latest quotes from server
+        console.log("Sync complete: Local storage updated with server data.");
+    } catch (error) {
+        console.error("Error syncing quotes:", error);
+    }
+}
+
+// Function to post a new quote to the server
 async function postQuoteToServer(newQuote) {
     try {
         const response = await fetch(API_URL, {
@@ -100,7 +110,7 @@ function notifyUser(message) {
 }
 
 // Auto-sync with the server every 30 seconds
-setInterval(fetchQuotesFromServer, 30000);
+setInterval(syncQuotes, 30000);
 
 // Fetch quotes when the page loads
-document.addEventListener("DOMContentLoaded", fetchQuotesFromServer);
+document.addEventListener("DOMContentLoaded", syncQuotes);
