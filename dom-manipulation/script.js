@@ -13,9 +13,9 @@ async function fetchQuotesFromServer() {
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch server data");
-        
+
         const serverQuotes = await response.json();
-        
+
         // Simulated transformation of fetched quotes
         const formattedQuotes = serverQuotes.slice(0, 5).map(q => ({
             text: q.title,
@@ -29,22 +29,56 @@ async function fetchQuotesFromServer() {
 }
 
 // Function to sync local quotes with the server
-function resolveConflicts(serverQuotes) {
-    let localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
-    let updatedQuotes = [...serverQuotes];
+async function postQuoteToServer(newQuote) {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newQuote)
+        });
 
-    // Merge local and server data, avoiding duplicates
-    localQuotes.forEach(localQuote => {
-        if (!serverQuotes.some(sq => sq.text === localQuote.text)) {
-            updatedQuotes.push(localQuote);
-        }
-    });
+        if (!response.ok) throw new Error("Failed to post quote to server");
 
-    quotes = updatedQuotes;
-    saveQuotes();
-    populateCategories();
-    filterQuotes();
-    notifyUser("Quotes have been synced with the server.");
+        console.log("Quote successfully posted to server:", await response.json());
+    } catch (error) {
+        console.error("Error posting quote:", error);
+    }
+}
+
+// Function to add a new quote
+function addQuote() {
+    const quoteInput = document.getElementById("newQuoteText");
+    const categoryInput = document.getElementById("newQuoteCategory");
+
+    if (!quoteInput || !categoryInput) {
+        console.error("Error: Input fields not found.");
+        return;
+    }
+
+    const newQuoteText = quoteInput.value.trim();
+    const newQuoteCategory = categoryInput.value.trim();
+
+    if (newQuoteText && newQuoteCategory) {
+        const newQuote = { text: newQuoteText, category: newQuoteCategory };
+
+        // Add new quote to the array and local storage
+        quotes.push(newQuote);
+        saveQuotes();
+
+        // Post the new quote to the server
+        postQuoteToServer(newQuote);
+
+        // Clear input fields
+        quoteInput.value = "";
+        categoryInput.value = "";
+
+        // Update UI
+        displayRandomQuote();
+    } else {
+        alert("Please enter both quote text and category.");
+    }
 }
 
 // Function to notify user about sync updates
@@ -59,7 +93,7 @@ function notifyUser(message) {
     notification.style.color = "white";
     notification.style.borderRadius = "5px";
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         document.body.removeChild(notification);
     }, 3000);
